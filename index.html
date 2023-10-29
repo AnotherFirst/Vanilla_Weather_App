@@ -10,11 +10,40 @@
             integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
             crossorigin="anonymous"
         />
-        <title>Weather</title>
+        <title>Weather App</title>
     </head>
     <body>
         <div class="container">
-            <div class="weather-app"></div>
+            <div class="weather-app-wrapper">
+                <div class="weather-app">
+                    <div class="row">
+                        <h1>New York</h1>
+                        <ul>
+                            <li>Sun 29 Oct 16.45</li>
+                            <li>mostly cloudy</li>
+                        </ul>
+                        <div class="col-6">
+                            <img
+                                src="https://ssl.gstatic.com/onebox/weather/64/partly_cloudy.png"
+                                alt="mostly-cloudy"
+                            />12°C|°F
+                        </div>
+                        <div class="col-6">
+                            <ul>
+                                <li>Min temp: 10°C</li>
+                                <li>Max temp: 15°C</li>
+                                <li></li>
+                                <li>Sunrise: 06:00</li>
+                                <li>Sunset: 18:00</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <small
+                    ><a href="" target="_blank">Open-source code</a> by
+                    MZ</small
+                >
+            </div>
         </div>
         <script src="src/app.js"></script>
     </body>
