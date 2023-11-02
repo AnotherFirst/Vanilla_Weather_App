@@ -1,6 +1,12 @@
+// *******************************************
+// Functions
+// *******************************************
+
 function refreshWeather(response) {
     console.log(response.data);
+    console.log("inside refreshWeather: " + unitSystem);
     let temperatureElement = document.querySelector("#temperature");
+    let weatherAppUnitElement = document.querySelector("#weather-app-unit");
     let cityElement = document.querySelector("#city");
     let descriptionElement = document.querySelector("#description");
     let humidityElement = document.querySelector("#humidity");
@@ -12,7 +18,14 @@ function refreshWeather(response) {
     temperatureElement.innerHTML = Math.round(
         response.data.temperature.current
     );
-    cityElement.innerHTML = response.data.city;
+    if (unitSystem === "metric") {
+        console.log("is metric");
+        weatherAppUnitElement.innerHTML = "°C";
+    } else {
+        weatherAppUnitElement.innerHTML = "°F";
+        console.log("is imperial");
+    }
+    weatherAppUnitElement.value = cityElement.innerHTML = response.data.city;
     descriptionElement.innerHTML = response.data.condition.description;
     humidityElement.innerHTML = response.data.temperature.humidity + "%";
     windSpeedElement.innerHTML = `${response.data.wind.speed}km/h`;
@@ -44,20 +57,52 @@ function formatDate(date) {
     return `${day} ${hours}:${minutes}`;
 }
 
-function searchCity(city) {
+function searchCity(city, unitSystem2) {
+    console.log(city);
+    console.log(unitSystem2);
     let apiKey = "bd6b645te7b552aa0f390e2137b8oe0e";
-    let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
+    let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=${unitSystem2}`;
+    console.log(apiUrl);
     axios.get(apiUrl).then(refreshWeather);
 }
 
 function handleSearchSubmit(event) {
     event.preventDefault();
     let searchInput = document.querySelector("#search-form-input");
-    searchCity(searchInput.value);
+    searchCity(searchInput.value, unitSystem);
 }
+
+function switchUnits(event) {
+    event.preventDefault();
+    // console.log("event value " + unitBtnElement.value);
+    if (unitBtnElement.value === "Switch to °F") {
+        unitSystem = "imperial";
+        unitBtnElement.value = "Switch to °C";
+    } else if (unitBtnElement.value === "Switch to °C") {
+        unitSystem = "metric";
+        unitBtnElement.value = "Switch to °F";
+    }
+    searchCity(city, unitSystem);
+    // console.log("return " + unitSystem);
+    // return unitSystem;
+}
+
+// *******************************************
+// Global variables
+// *******************************************
+
+let unitSystem = "metric";
+let city = "Miami";
 
 let searchFormElement = document.querySelector("#search-form");
 searchFormElement.addEventListener("submit", handleSearchSubmit);
 
+// *******************************************
+// Main program
+// *******************************************
+
+let unitBtnElement = document.querySelector("#unitBtn");
+unitBtnElement.addEventListener("click", switchUnits);
+
 // Search for Miami as default city when loading the page
-searchCity("Miami");
+searchCity(city, unitSystem);

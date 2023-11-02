@@ -31,7 +31,14 @@
                     <input
                         type="submit"
                         value="Search"
-                        class="search-form-button"
+                        class="search-form-button-search"
+                    />
+                    <!-- <button class="search-form-button-unit" id="unitBtn">°F</button> -->
+                    <input
+                        type="button"
+                        value="Switch to °F"
+                        class="search-form-button-unit"
+                        id="unitBtn"
                     />
                 </form>
             </header>
@@ -54,7 +61,10 @@
                             class="weather-app-temperature"
                             id="temperature"
                         ></div>
-                        <div class="weather-app-unit">°C</div>
+                        <div
+                            class="weather-app-unit"
+                            id="weather-app-unit"
+                        ></div>
                     </div>
                 </div>
             </main>
@@ -65,7 +75,8 @@
                     target="_blank"
                     >Open-source code</a
                 >
-                by MZ
+                by MZ, hosted on
+                <a href="tbd" target="_blank">Netlify</a>
             </footer>
 
             <!-- parked for now
