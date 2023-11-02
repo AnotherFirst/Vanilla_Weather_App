@@ -24,11 +24,12 @@ function refreshWeather(response) {
         windSpeedUnit = "mi/h";
         weatherAppUnitElement.innerHTML = "°F";
     }
+    city = response.data.city;
 
     temperatureElement.innerHTML = Math.round(
         response.data.temperature.current
     );
-    weatherAppUnitElement.value = cityElement.innerHTML = response.data.city;
+    cityElement.innerHTML = city;
     descriptionElement.innerHTML = response.data.condition.description;
     humidityElement.innerHTML = response.data.temperature.humidity + "%";
     windSpeedElement.innerHTML = `${response.data.wind.speed}${windSpeedUnit}`;
