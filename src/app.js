@@ -3,8 +3,8 @@
 // *******************************************
 
 function refreshWeather(response) {
-    console.log(response.data);
-    console.log("inside refreshWeather: " + unitSystem);
+    // console.log(response.data);
+    // console.log("inside refreshWeather: " + unitSystem);
     let temperatureElement = document.querySelector("#temperature");
     let weatherAppUnitElement = document.querySelector("#weather-app-unit");
     let cityElement = document.querySelector("#city");
@@ -14,21 +14,24 @@ function refreshWeather(response) {
     let timeElement = document.querySelector("#time");
     let date = new Date(response.data.time * 1000);
     let iconElement = document.querySelector("#icon");
+    let windSpeedUnit = null;
+    if (unitSystem === "metric") {
+        // console.log("is metric");
+        windSpeedUnit = "m/s";
+        weatherAppUnitElement.innerHTML = "°C";
+    } else if (unitSystem === "imperial") {
+        // console.log("is imperial");
+        windSpeedUnit = "mi/h";
+        weatherAppUnitElement.innerHTML = "°F";
+    }
 
     temperatureElement.innerHTML = Math.round(
         response.data.temperature.current
     );
-    if (unitSystem === "metric") {
-        console.log("is metric");
-        weatherAppUnitElement.innerHTML = "°C";
-    } else {
-        weatherAppUnitElement.innerHTML = "°F";
-        console.log("is imperial");
-    }
     weatherAppUnitElement.value = cityElement.innerHTML = response.data.city;
     descriptionElement.innerHTML = response.data.condition.description;
     humidityElement.innerHTML = response.data.temperature.humidity + "%";
-    windSpeedElement.innerHTML = `${response.data.wind.speed}km/h`;
+    windSpeedElement.innerHTML = `${response.data.wind.speed}${windSpeedUnit}`;
     timeElement.innerHTML = formatDate(date);
     iconElement.innerHTML = `<img
               src="${response.data.condition.icon_url}"
@@ -57,12 +60,17 @@ function formatDate(date) {
     return `${day} ${hours}:${minutes}`;
 }
 
-function searchCity(city, unitSystem2) {
-    console.log(city);
-    console.log(unitSystem2);
-    let apiKey = "bd6b645te7b552aa0f390e2137b8oe0e";
-    let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=${unitSystem2}`;
-    console.log(apiUrl);
+function searchCity(city) {
+    // let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=${unitSystem}`;
+    let apiUrl =
+        baseApiURL +
+        "query=" +
+        city +
+        "&key=" +
+        apiKey +
+        "&units=" +
+        unitSystem;
+    // console.log(apiUrl);
     axios.get(apiUrl).then(refreshWeather);
 }
 
@@ -94,6 +102,9 @@ function switchUnits(event) {
 let unitSystem = "metric";
 let city = "Miami";
 
+let apiKey = "bd6b645te7b552aa0f390e2137b8oe0e";
+let baseApiURL = "https://api.shecodes.io/weather/v1/current?";
+
 let searchFormElement = document.querySelector("#search-form");
 searchFormElement.addEventListener("submit", handleSearchSubmit);
 
@@ -105,4 +116,4 @@ let unitBtnElement = document.querySelector("#unitBtn");
 unitBtnElement.addEventListener("click", switchUnits);
 
 // Search for Miami as default city when loading the page
-searchCity(city, unitSystem);
+searchCity(city);
