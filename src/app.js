@@ -31,9 +31,9 @@ function refreshWeather(response) {
     );
     cityElement.innerHTML = city;
     descriptionElement.innerHTML = response.data.condition.description;
-    humidityElement.innerHTML = response.data.temperature.humidity + "%";
-    windSpeedElement.innerHTML = `${response.data.wind.speed}${windSpeedUnit}`;
-    timeElement.innerHTML = formatDate(date);
+    humidityElement.innerHTML = `Humidity: <strong>${response.data.temperature.humidity}%, </strong> `;
+    windSpeedElement.innerHTML = `Wind: <strong>${response.data.wind.speed}${windSpeedUnit}</strong>`;
+    timeElement.innerHTML = formatDate(date) + ",";
     iconElement.innerHTML = `<img
               src="${response.data.condition.icon_url}"
               alt="weather icon"
