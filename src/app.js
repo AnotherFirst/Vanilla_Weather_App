@@ -39,6 +39,8 @@ function refreshWeather(response) {
               alt="weather icon"
               class="weather-app-icon"
           />`;
+
+    getForecastCity(response.data.city);
 }
 
 function formatDate(date) {
@@ -114,6 +116,24 @@ function searchPosition(position) {
     axios.get(apiUrl).then(refreshWeather);
 }
 
+function getForecastCity(city) {
+    // let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=${unitSystem}`;
+    let apiUrlForecast =
+        baseApiUrlForecast +
+        "query=" +
+        city +
+        "&key=" +
+        apiKey +
+        "&units=" +
+        unitSystem;
+    // console.log(apiUrl);
+    axios.get(apiUrlForecast).then(updateForecast);
+}
+
+function updateForecast(response) {
+    console.log(response);
+}
+
 function handleSearchSubmit(event) {
     event.preventDefault();
     let searchInput = document.querySelector("#search-form-input");
@@ -148,6 +168,7 @@ let city = "Miami";
 
 let apiKey = "bd6b645te7b552aa0f390e2137b8oe0e";
 let baseApiUrlCurrent = "https://api.shecodes.io/weather/v1/current?";
+let baseApiUrlForecast = "https://api.shecodes.io/weather/v1/forecast?";
 
 let searchFormElement = document.querySelector("#search-form");
 searchFormElement.addEventListener("submit", handleSearchSubmit);
