@@ -164,3 +164,34 @@ getPositionElement.addEventListener("click", getPosition);
 
 // Search for Miami as default city when loading the page
 searchCity(city);
+
+function displayForecast() {
+    let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    let forecastHTML = "";
+
+    days.forEach(function (day) {
+        forecastHTML =
+            forecastHTML +
+            ` 
+    <div class="forecast-day-container">
+      <div class="forecast-day">${day}</div>
+      <div class="forecast-icon">
+        <img
+          src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/rain-day.png"
+          alt="weather icon"
+          width="50"
+        />
+      </div>
+      <div class="forecast-temps">
+        <span class="forecast-temp-max">10° </span>
+        <span class="forecast-temp-min">0°</span>
+      </div>
+    </div>
+    `;
+    });
+
+    let forecastElement = document.querySelector("#forecast");
+    forecastElement.innerHTML = forecastHTML;
+}
+
+displayForecast();
