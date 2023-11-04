@@ -3,9 +3,10 @@
 // *******************************************
 
 function refreshWeather(response) {
-    // console.log(response.data);
+    console.log(response.data);
     // console.log("inside refreshWeather: " + unitSystem);
     let temperatureElement = document.querySelector("#temperature");
+    let feelsLikeElement = document.querySelector("#feels-like");
     let weatherAppUnitElement = document.querySelector("#weather-app-unit");
     let cityElement = document.querySelector("#city");
     let descriptionElement = document.querySelector("#description");
@@ -29,6 +30,9 @@ function refreshWeather(response) {
     temperatureElement.innerHTML = Math.round(
         response.data.temperature.current
     );
+    feelsLikeElement.innerHTML = `feels like: ${Math.round(
+        response.data.temperature.feels_like
+    )}°`;
     cityElement.innerHTML = city;
     descriptionElement.innerHTML = response.data.condition.description;
     humidityElement.innerHTML = `Humidity: <strong>${response.data.temperature.humidity}%</strong> `;
@@ -80,6 +84,13 @@ function formatDate(date) {
     return `${weekday}, ${month} ${day}, ${hours}:${minutes}`;
 }
 
+function formatDayShort(timestamp) {
+    let date = new Date(timestamp * 1000);
+    let days = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
+
+    return days[date.getDay()];
+}
+
 function searchCity(city) {
     // let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=${unitSystem}`;
     let apiUrl =
@@ -127,11 +138,7 @@ function getForecastCity(city) {
         "&units=" +
         unitSystem;
     // console.log(apiUrl);
-    axios.get(apiUrlForecast).then(updateForecast);
-}
-
-function updateForecast(response) {
-    console.log(response);
+    axios.get(apiUrlForecast).then(displayForecast);
 }
 
 function handleSearchSubmit(event) {
@@ -159,12 +166,47 @@ function getPosition(event) {
     navigator.geolocation.getCurrentPosition(searchPosition);
 }
 
+function displayForecast(response) {
+    console.log(response.data);
+    let forecastHTML = "";
+
+    response.data.daily.forEach(function (day, index) {
+        if (index < 5) {
+            forecastHTML =
+                forecastHTML +
+                ` 
+                  <div class="forecast-day-container">
+                    <div class="forecast-day">${formatDayShort(day.time)}</div>
+                    <div class="forecast-icon">
+                      <img
+                        src="${day.condition.icon_url}"
+                        alt="weather icon"
+                        width="88"
+                      />
+                    </div>
+                    <div class="forecast-temps">
+                      <span class="forecast-temp-max">${Math.round(
+                          day.temperature.maximum
+                      )}° </span>
+                      <span class="forecast-temp-min">${Math.round(
+                          day.temperature.minimum
+                      )}°</span>
+                    </div>
+                  </div>
+                `;
+        }
+    });
+
+    let forecastElement = document.querySelector("#forecast");
+    forecastElement.innerHTML = forecastHTML;
+}
+
 // *******************************************
 // Global variables
 // *******************************************
 
 let unitSystem = "metric";
-let city = "Miami";
+let city = "Munich";
 
 let apiKey = "bd6b645te7b552aa0f390e2137b8oe0e";
 let baseApiUrlCurrent = "https://api.shecodes.io/weather/v1/current?";
@@ -186,33 +228,4 @@ getPositionElement.addEventListener("click", getPosition);
 // Search for Miami as default city when loading the page
 searchCity(city);
 
-function displayForecast() {
-    let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-    let forecastHTML = "";
-
-    days.forEach(function (day) {
-        forecastHTML =
-            forecastHTML +
-            ` 
-    <div class="forecast-day-container">
-      <div class="forecast-day">${day}</div>
-      <div class="forecast-icon">
-        <img
-          src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/rain-day.png"
-          alt="weather icon"
-          width="50"
-        />
-      </div>
-      <div class="forecast-temps">
-        <span class="forecast-temp-max">10° </span>
-        <span class="forecast-temp-min">0°</span>
-      </div>
-    </div>
-    `;
-    });
-
-    let forecastElement = document.querySelector("#forecast");
-    forecastElement.innerHTML = forecastHTML;
-}
-
-displayForecast();
+// displayForecast();
