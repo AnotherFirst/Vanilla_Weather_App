@@ -130,3 +130,24 @@ footer {
 a {
     color: #885df1;
 }
+
+.weather-forecast {
+    margin-top: 20px;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+.forecast-day {
+    font-size: 16px;
+    opacity: 0.65;
+}
+
+.forecast-temps {
+    font-size: 13px;
+}
+
+.forecast-temp-min {
+    font-size: 13px;
+    opacity: 0.5;
+}

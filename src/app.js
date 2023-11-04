@@ -81,7 +81,7 @@ function formatDate(date) {
 function searchCity(city) {
     // let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=${unitSystem}`;
     let apiUrl =
-        baseApiURL +
+        baseApiUrlCurrent +
         "query=" +
         city +
         "&key=" +
@@ -101,7 +101,7 @@ function searchPosition(position) {
     let lon = position.coords.longitude;
 
     let apiUrl =
-        baseApiURL +
+        baseApiUrlCurrent +
         "lon=" +
         lon +
         "&lat=" +
@@ -147,7 +147,7 @@ let unitSystem = "metric";
 let city = "Miami";
 
 let apiKey = "bd6b645te7b552aa0f390e2137b8oe0e";
-let baseApiURL = "https://api.shecodes.io/weather/v1/current?";
+let baseApiUrlCurrent = "https://api.shecodes.io/weather/v1/current?";
 
 let searchFormElement = document.querySelector("#search-form");
 searchFormElement.addEventListener("submit", handleSearchSubmit);
