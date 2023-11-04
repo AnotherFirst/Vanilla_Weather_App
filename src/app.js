@@ -92,6 +92,28 @@ function searchCity(city) {
     axios.get(apiUrl).then(refreshWeather);
 }
 
+function searchPosition(position) {
+    // let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=${unitSystem}`;
+
+    // https://api.shecodes.io/weather/v1/current?lon={lon}&lat={lat}&key={key}
+
+    let lat = position.coords.latitude;
+    let lon = position.coords.longitude;
+
+    let apiUrl =
+        baseApiURL +
+        "lon=" +
+        lon +
+        "&lat=" +
+        lat +
+        "&key=" +
+        apiKey +
+        "&units=" +
+        unitSystem;
+    console.log(apiUrl);
+    axios.get(apiUrl).then(refreshWeather);
+}
+
 function handleSearchSubmit(event) {
     event.preventDefault();
     let searchInput = document.querySelector("#search-form-input");
@@ -113,6 +135,10 @@ function switchUnits(event) {
     // return unitSystem;
 }
 
+function getPosition(event) {
+    navigator.geolocation.getCurrentPosition(searchPosition);
+}
+
 // *******************************************
 // Global variables
 // *******************************************
@@ -130,8 +156,11 @@ searchFormElement.addEventListener("submit", handleSearchSubmit);
 // Main program
 // *******************************************
 
-let unitBtnElement = document.querySelector("#unitBtn");
+let unitBtnElement = document.querySelector("#unit-btn");
 unitBtnElement.addEventListener("click", switchUnits);
+
+let getPositionElement = document.querySelector("#get-position-btn");
+getPositionElement.addEventListener("click", getPosition);
 
 // Search for Miami as default city when loading the page
 searchCity(city);
