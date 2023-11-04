@@ -31,8 +31,8 @@ function refreshWeather(response) {
     );
     cityElement.innerHTML = city;
     descriptionElement.innerHTML = response.data.condition.description;
-    humidityElement.innerHTML = `Humidity: <strong>${response.data.temperature.humidity}%, </strong> `;
-    windSpeedElement.innerHTML = `Wind: <strong>${response.data.wind.speed}${windSpeedUnit}</strong>`;
+    humidityElement.innerHTML = `Humidity: <strong>${response.data.temperature.humidity}%</strong> `;
+    windSpeedElement.innerHTML = `  Wind: <strong>${response.data.wind.speed}${windSpeedUnit}</strong>`;
     timeElement.innerHTML = formatDate(date) + ",";
     iconElement.innerHTML = `<img
               src="${response.data.condition.icon_url}"
@@ -42,6 +42,20 @@ function refreshWeather(response) {
 }
 
 function formatDate(date) {
+    let months = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+    ];
     let days = [
         "Sunday",
         "Monday",
@@ -49,8 +63,11 @@ function formatDate(date) {
         "Wednesday",
         "Thursday",
         "Friday",
+        "Saturday",
     ];
-    let day = days[date.getDay()];
+    let month = months[date.getMonth()];
+    let day = date.getDate();
+    let weekday = days[date.getDay()];
     let hours = date.getHours();
     let minutes = date.getMinutes();
 
@@ -58,7 +75,7 @@ function formatDate(date) {
         minutes = `0${minutes}`;
     }
     // Tuesday 18:00
-    return `${day} ${hours}:${minutes}`;
+    return `${weekday}, ${month} ${day}, ${hours}:${minutes}`;
 }
 
 function searchCity(city) {
