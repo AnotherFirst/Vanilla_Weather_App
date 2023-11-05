@@ -80,7 +80,7 @@ main {
 
 .weather-app-temperature-container-row1 {
     display: flex;
-    flex-wrap: wrap-reverse;
+    flex-wrap: wrap;
 }
 .weather-app-temperature-container-row2 {
     color: rgba(39, 33, 66, 0.4);
@@ -111,6 +111,7 @@ main {
     margin-top: 20px;
     text-align: center;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
 }
 
@@ -118,6 +119,7 @@ main {
     /* border: 1px solid #f6f3ff;
     border-radius: 20px;
     box-shadow: 6px 5px 20px rgba(0, 0, 0, 0.1); */
+    margin: 15px auto;
     padding: 10px auto;
 }
 .forecast-day {
