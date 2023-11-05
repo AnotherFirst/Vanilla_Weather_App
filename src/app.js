@@ -116,7 +116,7 @@ function refreshWeather(response) {
     let descriptionElement = document.querySelector("#description");
     let humidityElement = document.querySelector("#humidity");
     let windSpeedElement = document.querySelector("#wind-speed");
-    let weatherAppUnitElement = document.querySelector("#weather-app-unit");
+    let weatherAppUnitElement = document.querySelector("#temperature-unit");
     let windSpeedUnit = null;
     if (unitSystem === "metric") {
         // console.log("is metric");

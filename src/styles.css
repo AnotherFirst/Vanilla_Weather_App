@@ -8,8 +8,8 @@ body {
     border-radius: 16px;
     box-shadow: 6px 5px 20px rgba(0, 0, 0, 0.1);
     margin: 20px auto;
-    max-width: 500px;
-    padding: 30px;
+    max-width: 550px;
+    padding: 25px;
 }
 
 header {
@@ -35,7 +35,7 @@ header {
     width: 600%;
 }
 .search-form-btn {
-    background-color: #a55ae3;
+    background-color: #984fd4;
     border: none;
     border-radius: 10px;
     box-shadow: 6px 5px 20px rgba(0, 0, 0, 0.1);
@@ -53,56 +53,52 @@ main {
     padding: 20px 0;
 }
 
-.weather-app-data {
-    border-bottom: 1px solid #f9f7fe;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-
-.weather-app-city {
+.city {
     margin: 0;
     font-size: 38px;
     line-height: 48px;
     opacity: 0.7;
 }
 
-.weather-app-details {
+.current-weather {
+    border-bottom: 1px solid #f9f7fe;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.current-weather-left-column-container {
     color: rgba(39, 33, 66, 0.4);
     font-size: 16px;
     font-weight: 500;
     line-height: 24px;
 }
 
-.weather-app-details strong {
-    color: #a01aed;
+.current-weather-left-column-container strong {
+    color: #984fd4;
     opacity: 0.8;
 }
 
-.weather-app-temperature-container-row1 {
+.current-weather-right-column-row1 {
     display: flex;
     flex-wrap: wrap;
 }
-.weather-app-temperature-container-row2 {
+.current-weather-right-column-row2 {
     color: rgba(39, 33, 66, 0.4);
     font-size: 16px;
     text-align: left;
     padding-left: 17px;
+    margin-bottom: 10px;
 }
 
-.weather-app-icon {
-    height: 88px;
-    width: 88px;
-}
-
-.weather-app-temperature {
+.current-temperature {
     font-size: 60px;
     font-weight: bold;
     line-height: 88px;
     opacity: 0.7;
 }
 
-.weather-app-unit {
+.temperature-unit {
     font-size: 30px;
     margin-top: 15px;
     font-weight: bold;
@@ -122,7 +118,7 @@ main {
     border-radius: 20px;
     box-shadow: 6px 5px 20px rgba(0, 0, 0, 0.1);
     margin: 15px auto;
-    padding: 10px auto;
+    padding: 3px;
 }
 .forecast-day {
     font-size: 20px;
@@ -151,5 +147,5 @@ footer {
 }
 
 a {
-    color: #a01aed;
+    color: #984fd4;
 }
