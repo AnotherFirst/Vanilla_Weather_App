@@ -86,7 +86,8 @@ main {
 .weather-app-temperature-container-row2 {
     color: rgba(39, 33, 66, 0.4);
     font-size: 16px;
-    text-align: center;
+    text-align: left;
+    padding-left: 17px;
 }
 
 .weather-app-icon {
