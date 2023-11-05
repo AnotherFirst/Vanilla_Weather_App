@@ -2,49 +2,43 @@
 // Functions
 // *******************************************
 
-function refreshWeather(response) {
-    console.log(response.data);
-    // console.log("inside refreshWeather: " + unitSystem);
-    let temperatureElement = document.querySelector("#temperature");
-    let feelsLikeElement = document.querySelector("#feels-like");
-    let weatherAppUnitElement = document.querySelector("#weather-app-unit");
-    let cityElement = document.querySelector("#city");
-    let descriptionElement = document.querySelector("#description");
-    let humidityElement = document.querySelector("#humidity");
-    let windSpeedElement = document.querySelector("#wind-speed");
-    let timeElement = document.querySelector("#time");
-    let date = new Date(response.data.time * 1000);
-    let iconElement = document.querySelector("#icon");
-    let windSpeedUnit = null;
-    if (unitSystem === "metric") {
-        // console.log("is metric");
-        windSpeedUnit = "m/s";
-        weatherAppUnitElement.innerHTML = "°C";
-    } else if (unitSystem === "imperial") {
-        // console.log("is imperial");
-        windSpeedUnit = "mi/h";
-        weatherAppUnitElement.innerHTML = "°F";
-    }
-    city = response.data.city;
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
-    temperatureElement.innerHTML = Math.round(
-        response.data.temperature.current
-    );
-    feelsLikeElement.innerHTML = `feels like: ${Math.round(
-        response.data.temperature.feels_like
-    )}°`;
-    cityElement.innerHTML = city;
-    descriptionElement.innerHTML = response.data.condition.description;
-    humidityElement.innerHTML = `Humidity: <strong>${response.data.temperature.humidity}%</strong> `;
-    windSpeedElement.innerHTML = `  Wind: <strong>${response.data.wind.speed}${windSpeedUnit}</strong>`;
-    timeElement.innerHTML = formatDate(date) + ",";
-    iconElement.innerHTML = `<img
-              src="${response.data.condition.icon_url}"
-              alt="weather icon"
-              class="weather-app-icon"
-          />`;
+function displayForecast(response) {
+    // console.log(response.data);
+    let forecastHTML = "";
 
-    getForecastCity(response.data.city);
+    response.data.daily.forEach(function (day, index) {
+        if (index < 5) {
+            forecastHTML =
+                forecastHTML +
+                ` 
+                  <div class="forecast-day-container">
+                    <div class="forecast-day">${formatDayShort(day.time)}</div>
+                    <div class="forecast-icon">
+                      <img
+                        src="${day.condition.icon_url}"
+                        alt="${day.condition.description}"
+                        width="75"
+                      />
+                    </div>
+                    <div class="forecast-temps">
+                      <span class="forecast-temp-max">${Math.round(
+                          day.temperature.maximum
+                      )}° </span>
+                      <span class="forecast-temp-min">${Math.round(
+                          day.temperature.minimum
+                      )}°</span>
+                    </div>
+                  </div>
+                `;
+        }
+    });
+
+    let forecastElement = document.querySelector("#forecast");
+    forecastElement.innerHTML = forecastHTML;
 }
 
 function formatDate(date) {
@@ -80,19 +74,90 @@ function formatDate(date) {
     if (minutes < 10) {
         minutes = `0${minutes}`;
     }
-    // Tuesday 18:00
+
     return `${weekday}, ${month} ${day}, ${hours}:${minutes}`;
 }
 
 function formatDayShort(timestamp) {
     let date = new Date(timestamp * 1000);
-    let days = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
+    let weekdays = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
 
-    return days[date.getDay()];
+    return weekdays[date.getDay()];
+}
+
+function getForecastCity(city) {
+    let apiUrlForecast =
+        baseApiUrlForecast +
+        "query=" +
+        city +
+        "&key=" +
+        apiKey +
+        "&units=" +
+        unitSystem;
+    // console.log(apiUrl);
+    axios.get(apiUrlForecast).then(displayForecast);
+}
+
+function getPosition(event) {
+    navigator.geolocation.getCurrentPosition(searchPosition);
+}
+
+function handleSearchSubmit(event) {
+    event.preventDefault();
+    let searchInput = document.querySelector("#search-form-input");
+    searchCity(searchInput.value, unitSystem);
+}
+
+function refreshWeather(response) {
+    // console.log(response.data);
+    let cityElement = document.querySelector("#city");
+    let timeElement = document.querySelector("#time");
+    let date = new Date(response.data.time * 1000);
+    let descriptionElement = document.querySelector("#description");
+    let humidityElement = document.querySelector("#humidity");
+    let windSpeedElement = document.querySelector("#wind-speed");
+    let weatherAppUnitElement = document.querySelector("#weather-app-unit");
+    let windSpeedUnit = null;
+    if (unitSystem === "metric") {
+        // console.log("is metric");
+        windSpeedUnit = "m/s";
+        weatherAppUnitElement.innerHTML = "°C";
+    } else if (unitSystem === "imperial") {
+        // console.log("is imperial");
+        windSpeedUnit = "mi/h";
+        weatherAppUnitElement.innerHTML = "°F";
+    }
+    let iconElement = document.querySelector("#icon");
+    let temperatureElement = document.querySelector("#temperature");
+    let feelsLikeElement = document.querySelector("#feels-like");
+    city = response.data.city;
+
+    cityElement.innerHTML = city;
+    timeElement.innerHTML = `Last updated: ${formatDate(date)}`;
+    descriptionElement.innerHTML = capitalizeFirstLetter(
+        response.data.condition.description
+    );
+    humidityElement.innerHTML = `Humidity: <strong>${response.data.temperature.humidity}%</strong> `;
+    windSpeedElement.innerHTML = ` Wind: <strong>${Math.round(
+        response.data.wind.speed
+    )} ${windSpeedUnit}</strong>`;
+    iconElement.innerHTML = `
+      <img
+        src="${response.data.condition.icon_url}"
+        alt="${response.data.condition.description}"
+        class="weather-app-icon"
+      />`;
+    temperatureElement.innerHTML = Math.round(
+        response.data.temperature.current
+    );
+    feelsLikeElement.innerHTML = `Feels like: ${Math.round(
+        response.data.temperature.feels_like
+    )}°`;
+
+    getForecastCity(response.data.city);
 }
 
 function searchCity(city) {
-    // let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=${unitSystem}`;
     let apiUrl =
         baseApiUrlCurrent +
         "query=" +
@@ -106,10 +171,6 @@ function searchCity(city) {
 }
 
 function searchPosition(position) {
-    // let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=${unitSystem}`;
-
-    // https://api.shecodes.io/weather/v1/current?lon={lon}&lat={lat}&key={key}
-
     let lat = position.coords.latitude;
     let lon = position.coords.longitude;
 
@@ -123,33 +184,12 @@ function searchPosition(position) {
         apiKey +
         "&units=" +
         unitSystem;
-    console.log(apiUrl);
-    axios.get(apiUrl).then(refreshWeather);
-}
-
-function getForecastCity(city) {
-    // let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=${unitSystem}`;
-    let apiUrlForecast =
-        baseApiUrlForecast +
-        "query=" +
-        city +
-        "&key=" +
-        apiKey +
-        "&units=" +
-        unitSystem;
     // console.log(apiUrl);
-    axios.get(apiUrlForecast).then(displayForecast);
-}
-
-function handleSearchSubmit(event) {
-    event.preventDefault();
-    let searchInput = document.querySelector("#search-form-input");
-    searchCity(searchInput.value, unitSystem);
+    axios.get(apiUrl).then(refreshWeather);
 }
 
 function switchUnits(event) {
     event.preventDefault();
-    // console.log("event value " + unitBtnElement.value);
     if (unitBtnElement.value === "Switch to °F") {
         unitSystem = "imperial";
         unitBtnElement.value = "Switch to °C";
@@ -158,47 +198,6 @@ function switchUnits(event) {
         unitBtnElement.value = "Switch to °F";
     }
     searchCity(city, unitSystem);
-    // console.log("return " + unitSystem);
-    // return unitSystem;
-}
-
-function getPosition(event) {
-    navigator.geolocation.getCurrentPosition(searchPosition);
-}
-
-function displayForecast(response) {
-    console.log(response.data);
-    let forecastHTML = "";
-
-    response.data.daily.forEach(function (day, index) {
-        if (index < 5) {
-            forecastHTML =
-                forecastHTML +
-                ` 
-                  <div class="forecast-day-container">
-                    <div class="forecast-day">${formatDayShort(day.time)}</div>
-                    <div class="forecast-icon">
-                      <img
-                        src="${day.condition.icon_url}"
-                        alt="weather icon"
-                        width="88"
-                      />
-                    </div>
-                    <div class="forecast-temps">
-                      <span class="forecast-temp-max">${Math.round(
-                          day.temperature.maximum
-                      )}° </span>
-                      <span class="forecast-temp-min">${Math.round(
-                          day.temperature.minimum
-                      )}°</span>
-                    </div>
-                  </div>
-                `;
-        }
-    });
-
-    let forecastElement = document.querySelector("#forecast");
-    forecastElement.innerHTML = forecastHTML;
 }
 
 // *******************************************
@@ -225,7 +224,5 @@ unitBtnElement.addEventListener("click", switchUnits);
 let getPositionElement = document.querySelector("#get-position-btn");
 getPositionElement.addEventListener("click", getPosition);
 
-// Search for Miami as default city when loading the page
+// Search for Munich as default city when loading the page
 searchCity(city);
-
-// displayForecast();

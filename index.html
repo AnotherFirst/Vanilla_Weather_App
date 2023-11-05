@@ -4,12 +4,6 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="src/styles.css" />
-        <!-- <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-            crossorigin="anonymous"
-        /> -->
         <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Roboto"
@@ -32,12 +26,12 @@
                         class="search-form-input"
                         id="search-form-input"
                     />
-                    <button type="submit" class="search-form-button-search">
+                    <button type="submit" class="search-form-button-search btn">
                         <span class="material-icons">search</span>
                     </button>
                     <button
                         type="button"
-                        class="search-form-button-get-position"
+                        class="search-form-button-get-position btn"
                         id="get-position-btn"
                         title="Get weather for your current location"
                     >
@@ -46,21 +40,23 @@
                     <input
                         type="button"
                         value="Switch to °F"
-                        class="search-form-button-unit"
+                        class="search-form-button-unit btn"
                         id="unit-btn"
                     />
                 </form>
             </header>
 
             <main>
+                <h1 class="weather-app-city" id="city"></h1>
                 <div class="weather-app-data">
                     <div>
-                        <h1 class="weather-app-city" id="city"></h1>
                         <p class="weather-app-details">
                             <span id="time"></span>
-                            <span id="description"></span>
+                            <br />
+                            <strong id="description"></strong>
                             <br />
                             <span id="humidity"></span>
+                            <br />
                             <span id="wind-speed"></span>
                         </p>
                     </div>
@@ -98,44 +94,6 @@
                     >Netlify</a
                 >
             </footer>
-
-            <!-- parked for now
-        <div class="container">
-            <div class="weather-app-wrapper">
-                <div class="weather-app">
-                    <div class="row">
-                        <h1>New York</h1>
-                        <ul>
-                            <li>Sun 29 Oct 16.45</li>
-                            <li>mostly cloudy</li>
-                        </ul>
-                        <div class="col-6">
-                            <img
-                                src="https://ssl.gstatic.com/onebox/weather/64/partly_cloudy.png"
-                                alt="mostly-cloudy"
-                            />12°C|°F
-                        </div>
-                        <div class="col-6">
-                            <ul>
-                                <li>Min temp: 10°C</li>
-                                <li>Max temp: 15°C</li>
-                                <li></li>
-                                <li>Sunrise: 06:00</li>
-                                <li>Sunset: 18:00</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <small
-                    ><a
-                        href="https://github.com/AnotherFirst/Vanilla_Weather_App"
-                        target="_blank"
-                        >Open-source code</a
-                    >
-                    by MZ</small
-                >
-            </div>
-        </div> -->
         </div>
         <script src="src/app.js"></script>
     </body>
