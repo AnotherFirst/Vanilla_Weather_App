@@ -191,12 +191,12 @@ function searchPosition(position) {
 function switchUnits(event) {
     event.preventDefault();
     // trim is necessary to remove line break and tabs from original html
-    if (unitBtnElement.innerHTML.trim() === "Switch to °F") {
+    if (unitBtnElement.innerHTML.trim() === "Convert to °F") {
         unitSystem = "imperial";
-        unitBtnElement.innerHTML = "Switch to °C";
-    } else if (unitBtnElement.innerHTML.trim() === "Switch to °C") {
+        unitBtnElement.innerHTML = "Convert to °C";
+    } else if (unitBtnElement.innerHTML.trim() === "Convert to °C") {
         unitSystem = "metric";
-        unitBtnElement.innerHTML = "Switch to °F";
+        unitBtnElement.innerHTML = "Convert to °F";
     }
     searchCity(city, unitSystem);
 }
